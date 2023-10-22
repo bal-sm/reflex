@@ -542,20 +542,19 @@ class Component(Base, ABC):
                     if "connectError" in str(prop_var):
                         events = True
 
+        if base_state is None:
+           for child in self.children:
+                if isinstance(child, Bare):
+                    child = child.contents
+                if isinstance(child, Var) and child.state:
+                    base_state = child.state.partition(".")[0]
+                    break
+
         if events or base_state:
             js_func = self._render_out_of_band(
                 base_state=base_state,
                 events=events,
             )
-        else:
-           for child in self.children:
-                if isinstance(child, Bare):
-                    child = child.contents
-                if isinstance(child, Var) and child.state:
-                    js_func = self._render_out_of_band(
-                        base_state=child.state.partition(".")[0],
-                    )
-                    break
         return js_func
 
     def get_custom_code(self) -> Set[str]:
