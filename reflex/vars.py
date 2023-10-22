@@ -312,6 +312,7 @@ class Var(ABC):
                 type_=type_,
                 state=self.state,
                 is_local=self.is_local,
+                _full_name=f"{self.full_name}.at({i})",
             )
 
         # Dictionary / dataframe indexing.
